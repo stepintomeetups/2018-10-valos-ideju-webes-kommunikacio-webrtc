@@ -33,7 +33,7 @@ export default {
       let uuid = this.$store.state.uuid
       let name = this.$store.state.name
       /* eslint-disable no-unused-vars */
-      window.communicationSocket = new SocketHandler(this.$store, this.$router, uuid, name, 'localhost:3000')
+      window.communicationSocket = new SocketHandler(this.$store, this.$router, uuid, name, window.location.hostname)
     }
   }
 }
