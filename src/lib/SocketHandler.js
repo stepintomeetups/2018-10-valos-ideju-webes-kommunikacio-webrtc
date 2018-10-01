@@ -4,7 +4,7 @@ export default class SocketHandler {
     this.router = router
     this.uuid = uuid
     this.name = name
-    this.socketConnection = new WebSocket(`ws://${host}?uuid=${uuid}&name=${name}`)
+    this.socketConnection = new WebSocket(`${window.location.protocol.replace('http', 'ws')}//${host}?uuid=${uuid}&name=${name}`)
     this.subscribeForEvents()
   }
 
