@@ -7,7 +7,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-let name = window.localStorage.getItem('name')
+let name = window.sessionStorage.getItem('name')
 if (name) {
   store.dispatch('setName', name)
 }

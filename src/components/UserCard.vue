@@ -22,7 +22,13 @@ export default {
   },
   methods: {
     callUser (e) {
-      window.communicationSocket.emit('callUser', {uuid: this.user.uuid})
+      window.communicationSocket.emit('callUser', {
+        targetUser: this.user.uuid,
+        from: this.$store.state.uuid
+      })
+      this.$store.dispatch('setOutgoingCall', this.user.uuid)
+      this.$store.dispatch('setInitiator', true)
+      this.$router.push({name: 'OutgoingCall'})
     }
   }
 }

@@ -28,6 +28,13 @@ wss.broadcast = (type, data) => {
   })
 }
 
+let sendToUser = (targetId, msg) => {
+  let user = connections.find((u) => u.uuid === targetId)
+  if (user) {
+    user.ws.send(JSON.stringify(msg))
+  }
+}
+
 wss.on('connection', (ws, req) => {
   const { query: { uuid, name } } = url.parse(req.url, true)
   connections.push({uuid, name, ws})
@@ -38,29 +45,6 @@ wss.on('connection', (ws, req) => {
   })
   ws.onmessage = (event) => {
     let msg = JSON.parse(event.data)
-    switch (msg.type) {
-      case 'callUser':
-        let userToCall = connections.find((u) => u.uuid === msg.data.uuid)
-        let caller = connections.find((u) => u.uuid === uuid)
-        userToCall.ws.send(JSON.stringify({type: 'incomingCall', data: {from: uuid}}))
-        caller.ws.send(JSON.stringify({type: 'outgoingCall', data: {to: userToCall.uuid}}))
-        break
-      case 'cancelCall':
-      case 'dismissCall':
-        let userToCancel = connections.find((u) => u.uuid === msg.data.to)
-        let canceller = connections.find((u) => u.uuid === uuid)
-        userToCancel.ws.send(JSON.stringify({type: 'cancel', data: {}}))
-        canceller.ws.send(JSON.stringify({type: 'cancel', data: {}}))
-        break
-      case 'answerCall':
-        let userToAnswer = connections.find((u) => u.uuid === msg.data.to)
-        userToAnswer.ws.send(JSON.stringify({
-          type: 'answer',
-          data: {
-            from: uuid
-          }
-        }))
-        break
-    }
+    sendToUser(msg.data.targetUser, msg)
   }
 })

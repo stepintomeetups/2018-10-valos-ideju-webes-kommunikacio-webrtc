@@ -16,11 +16,10 @@ let state = {
     to: null
   },
   call: {
+    initiator: false,
     partner: {
-      uuid: null,
-      candidate: null
-    },
-    answered: false
+      uuid: null
+    }
   }
 }
 
@@ -36,6 +35,12 @@ let mutations = {
   },
   setOutgoingCall (state, to) {
     state.outgoingCall.to = to
+  },
+  setPartnerId (state, uuid) {
+    state.call.partner.uuid = uuid
+  },
+  setInitiator (state, initiator) {
+    state.call.initiator = initiator
   }
 }
 
@@ -58,8 +63,11 @@ let actions = {
   setOutgoingCall ({commit}, to) {
     commit('setOutgoingCall', to)
   },
-  answerCall ({commit}) {
-
+  setCallPartnerId ({commit}, uuid) {
+    commit('setPartnerId', uuid)
+  },
+  setInitiator ({commit}, initiator) {
+    commit('setInitiator', initiator)
   }
 }
 

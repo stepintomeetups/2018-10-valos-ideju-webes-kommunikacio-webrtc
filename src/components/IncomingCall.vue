@@ -1,15 +1,18 @@
 <template lang="pug">
-  div(class="notification incoming-call")
-    button(class="delete")
-    .
-      Incoming call form: {{ caller.name }}
-    br
-    button(class="button is-success is-rounded" @click="answer")
-      i(class="fa fa-phone")
-    button(class="button is-danger is-rounded" @click="dismiss")
-      i(class="fa fa-times")
+div(class="modal is-active")
+  div(class="modal-background")
+  div(class="modal-card")
+    div(class="modal-card-body incoming-call")
+      .
+        Incoming call form: {{ caller.name }}
+    footer.modal-card-foot
+      button(class="button is-success is-rounded is-large" @click="answer")
+        i(class="fa fa-phone")
+      button(class="button is-danger is-rounded is-large" @click="dismiss")
+        i(class="fa fa-times")
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'IncomingCall',
   props: ['from'],
@@ -19,15 +22,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setCallPartnerId']),
     answer () {
       window.communicationSocket.emit('answerCall', {
-        to: this.caller.uuid
+        targetUser: this.caller.uuid,
+        from: this.$store.state.uuid
       })
+      this.setCallPartnerId(this.caller.uuid)
+      this.$router.push({name: 'Call'})
     },
     dismiss () {
       window.communicationSocket.emit('dismissCall', {
-        to: this.caller.uuid
+        targetUser: this.caller.uuid
       })
+      this.$store.dispatch('setOutgoingCall', null)
+      this.$store.dispatch('setIncomingCall', null)
+      this.$router.push({name: 'UserList'})
     }
   }
 }
@@ -35,7 +45,5 @@ export default {
 
 <style lang="stylus" scoped>
 .incoming-call
-  position: absolute
-  right: 0
-  bottom: 0
+  font-size: 2em;
 </style>

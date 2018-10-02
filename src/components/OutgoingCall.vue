@@ -21,8 +21,11 @@ export default {
   methods: {
     cancelCall () {
       window.communicationSocket.emit('cancelCall', {
-        to: this.called.uuid
+        targetUser: this.called.uuid
       })
+      this.$store.dispatch('setOutgoingCall', null)
+      this.$store.dispatch('setIncomingCall', null)
+      this.$router.push({name: 'UserList'})
     }
   },
   watch: {

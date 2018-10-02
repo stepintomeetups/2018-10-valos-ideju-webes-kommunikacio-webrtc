@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import UserList from '@/components/UserList'
 import OutgoingCall from '@/components/OutgoingCall'
+import Call from '@/components/Call'
 import Login from '@/components/Login'
 import store from '@/store'
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/outgoing',
       name: 'OutgoingCall',
       component: OutgoingCall
+    },
+    {
+      path: '/call',
+      name: 'Call',
+      component: Call
     }
   ]
 })
