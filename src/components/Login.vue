@@ -17,7 +17,7 @@ export default {
       this.setName(e.target.value)
     },
     goToApp () {
-      window.localStorage.setItem('name', this.$store.state.name)
+      window.sessionStorage.setItem('name', this.$store.state.name)
       this.$router.push({name: 'UserList'})
     }
   },
