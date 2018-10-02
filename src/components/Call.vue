@@ -52,14 +52,7 @@ export default {
     }
   },
   mounted () {
-    this.rtcHandler = new RTCHandler({
-      localVideo: this.$refs.localVideo,
-      remoteVideo: this.$refs.partnerVideo,
-      socketHandler: window.communicationSocket,
-      targetId: this.partner.uuid,
-      userId: this.user.uuid
-    })
-    this.rtcHandler.init(this.$store.state.call.initiator)
+    // TODO: initiate WebRTC logic
   },
   beforeMount () {
     let state = this.$store.state
